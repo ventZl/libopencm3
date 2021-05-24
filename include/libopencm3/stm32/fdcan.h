@@ -725,26 +725,30 @@ struct fdcan_tx_buffer_element {
 #define FDCAN_FIFO_RXTS_MASK			0xFFFF
 
 
-/** FDCAN error return values
+/** @defgroup fdcan_error FDCAN error return values
+ * @{
  */
-	/** No error. Operation finished successfully */
-#define FDCAN_E_OK 						0
 
-	/** Value provided was out of range */
+/** No error. Operation finished successfully */
+#define FDCAN_E_OK						0
+
+/** Value provided was out of range */
 #define FDCAN_E_OUTOFRANGE				-1
 
-	/** Timeout waiting for FDCAN block to accept INIT bit change */
+/** Timeout waiting for FDCAN block to accept INIT bit change */
 #define FDCAN_E_TIMEOUT					-2
 
-	/** Value provided was invalid (FIFO index, FDCAN block base address, length, etc.) */
+/** Value provided was invalid (FIFO index, FDCAN block base address, length, etc.) */
 #define FDCAN_E_INVALID					-3
 
-	/** Device is busy: Transmit buffer is full, unable to queue additional message or device
-	 * is outside of INIT mode and cannot perform desired operation. */
+/** Device is busy: Transmit buffer is full, unable to queue additional message or device
+ * is outside of INIT mode and cannot perform desired operation. */
 #define FDCAN_E_BUSY					-4
 
-	/** Receive buffer is empty, unable to read any new message */
+/** Receive buffer is empty, unable to read any new message */
 #define FDCAN_E_NOTAVAIL				-5
+
+/**@}*/
 
 /**@}*/
 
