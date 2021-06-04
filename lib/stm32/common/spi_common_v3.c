@@ -135,6 +135,7 @@ void spi_disable(uint32_t spi)
 {
 	uint32_t reg32;
 
+//	SPI_IFCR(spi) = SPI_IFCR_TXTFC;
 	reg32 = SPI_CR1(spi);
 	reg32 &= ~(SPI_CR1_SPE); /* Disable SPI. */
 	SPI_CR1(spi) = reg32;
@@ -314,9 +315,9 @@ void spi_disable_crc(uint32_t spi)
  */
 void spi_set_transfer_size(uint32_t spi, uint16_t size)
 {
-	/* This code works and I don't have a clue why */
-	if (SPI_SR(spi) & SPI_SR_EOT) {
-		SPI_IFCR(spi) = SPI_IFCR_EOTC;
+	while ((SPI_SR(spi) & SPI_SR_TXTF) == 0 && ((SPI_CR2(spi) >> SPI_CR2_TSIZE_SHIFT) & SPI_CR2_TSIZE_MASK) != 0 );
+	if (SPI_SR(spi) & SPI_SR_TXTF) {
+		SPI_IFCR(spi) = SPI_IFCR_TXTFC;
 	}
 	SPI_CR2(spi) = (SPI_CR2(spi) & ~(SPI_CR2_TSIZE_MASK << SPI_CR2_TSIZE_SHIFT))
 		| (size << SPI_CR2_TSIZE_SHIFT);
@@ -802,6 +803,7 @@ void spi_set_crcl_16bit(uint32_t spi)
 
 void spi_set_data_size(uint32_t spi, uint16_t data_s)
 {
+//	SPI_IFCR(spi) = SPI_IFCR_TXTFC;
 	SPI_CFG1(spi) = (SPI_CFG1(spi) & ~(SPI_CFG1_DSIZE_MASK << SPI_CFG1_DSIZE_SHIFT))
 			| (data_s << SPI_CFG1_DSIZE_SHIFT);
 }
